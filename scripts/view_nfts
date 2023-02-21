@@ -1,0 +1,19 @@
+import KS_NFT from 0x02
+
+pub fun main(account: Address): [String] {
+    let nftCollection = getAccount(account).getCapability(/public/KS_NFTCollection)
+    .borrow<&KS_NFT.Collection{KS_NFT.CollectionPublic}>()
+        ?? panic("This NFT does not exist")    
+
+    let info: [String] = []; 
+	
+    //get first NFT, if any
+    let nftRef = nftCollection.borrowKS_NFT(id: nftCollection.getIDs()[0])
+    ?? panic("Could not borrow a reference to the NFT") 
+	
+    //log(nftRef);
+    info.append(nftRef.image)
+    info.append(nftRef.grFrom)
+    info.append(nftRef.grTo)
+    return info
+}
